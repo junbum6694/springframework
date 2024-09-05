@@ -20,14 +20,11 @@ contentType : JSP 실행 결과(응답 내용)의 종류 (MIME타입; charset=�
    </head>
    <body>
       <div class="d-flex flex-column vh-100">
-      
-         <%@ include file="/WEB-INF/views/common/nav.jsp" %>
+     	 <%@ include file="/WEB-INF/views/common/nav.jsp" %>
          
          <div class="flex-grow-1 m-2">
             <div class="row">
                <div class="col-md-4">
-               
                    <%@ include file="/WEB-INF/views/common/menu.jsp" %>
-                   
                </div>
                <div class="col-md-8">

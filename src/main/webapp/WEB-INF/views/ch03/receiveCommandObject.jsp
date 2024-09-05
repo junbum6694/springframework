@@ -1,14 +1,13 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<%@ include file="/WEB-INF/views/common/top.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/top.jsp" %>
 
 <div class="card">
-
-	<div class="card-header">CommandObject 데이터 읽기</div>
-
+	<div class="card-header">
+		CommandObject 데이터 읽기
+	</div>
+	
 	<div class="card-body">
-		<p>param1: ${ch03Dto.param1}</p>
+		<p>param1: ${ch03Dto.param1}</p> <!-- 클래스의 첫자를 소문자로 해서 저장함 -->
 		<p>param2: ${ch03Dto.param2}</p>
 		<p>param3: ${ch03Dto.param3}</p>
 		<p>param4: ${ch03Dto.param4}</p>
@@ -16,4 +15,4 @@
 	</div>
 </div>
 
-<%@ include file="/WEB-INF/views/common/bottom.jsp"%>
+<%@ include file="/WEB-INF/views/common/bottom.jsp" %>

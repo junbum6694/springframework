@@ -1,6 +1,5 @@
 package com.mycompany.springframework.service;
 
-import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Service;
 
 @Service

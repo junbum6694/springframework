@@ -1,5 +1,6 @@
 package com.mycompany.springframework.controller;
 
+
 import java.io.IOException;
 import java.io.PrintWriter;
 
@@ -10,10 +11,10 @@ import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -22,158 +23,176 @@ import com.mycompany.springframework.interceptor.LoginCheck;
 
 import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @Controller
 @RequestMapping("/ch02")
+@Slf4j
 public class Ch02Controller {
 	private static final Logger logger = LoggerFactory.getLogger(Ch02Controller.class);
-
-	@RequestMapping("getMethod")
-	public String getMethod() {
+	
+	@RequestMapping("/getMethod")
+	public String getMethod(Model model) {
 		log.info("실행");
+		model.addAttribute("chNum","ch02");
 		return "ch02/getMethod";
 	}
-
-	@RequestMapping(value = "/getAtag", method = RequestMethod.GET)
-	public String getAtag(String bno, String bkind) {
+	
+	//@RequestMapping(value="/getAtag", method=RequestMethod.GET)
+	@GetMapping("/getAtag")
+	public String getAtag(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
 		return "ch02/getMethod";
 	}
-
+	
 	@GetMapping("/getFormTag")
-	public String getFormTag(String bno, String bkind) {
+	public String getFormTag(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
 		return "redirect:/";
 	}
-
-	@RequestMapping("/getLocationHref")
-	public String getLocationHref(String bno, String bkind) {
+	
+	@GetMapping("/getLocationHref")
+	public String getLocationHref(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
-		return "ch02/getMethod";
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
+		return "ch02/getMethod"; 
 	}
-
-	@RequestMapping("/getAjax1")
-	public String getAjax1(String bno, String bkind) {
+	
+	@GetMapping("/getAjax1")
+	public String getAjax1(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
-		return "ch02/AjaxFragmentHtml";
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
+		return "ch02/ajaxFragmentHtml"; 
 	}
-
-	@RequestMapping("/getAjax2")
-	public String getAjax2(String bno, String bkind) {
+	
+	@GetMapping("/getAjax2")
+	public String getAjax2(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
-		return "ch02/AjaxJSON";
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
+		return "ch02/ajaxJSON"; 
 	}
-
-	@RequestMapping("postMethod")
-	public String postMethod() {
-		logger.info("실행");
+	
+	@GetMapping("/postMethod")
+	public String postMethod(Model model) {
+		log.info("실행");
+		model.addAttribute("chNum","ch02");
 		return "ch02/postMethod";
 	}
-
-	@PostMapping("/postFormTag")
-	public String postFormTag(String bno, String bkind) {
+	
+	@PostMapping("/postFormTag") 
+	public String postFormTag(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
 		return "redirect:/";
 	}
-
+	
 	@PostMapping("/postAjax1")
-	public String postAjax1(String bno, String bkind) {
+	public String postAjax1(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
-		return "ch02/AjaxFragmentHtml";
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
+		return "ch02/ajaxFragmentHtml"; // 홈으로 돌아가게 됨 
 	}
-
+	
 	@PostMapping("/postAjax2")
-	public String postAjax2(String bno, String bkind) {
+	public String postAjax2(String bno, String bkind, Model model) {
 		log.info("실행");
-		log.info(bno);
-		log.info(bkind);
-		return "ch02/AjaxJSON";
+		log.info("bno: " + bno);
+		log.info("bkind: " + bkind);
+		model.addAttribute("chNum","ch02");
+		return "ch02/ajaxJSON"; 
 	}
-
+	
 	@GetMapping("/returnModelAndView")
 	public ModelAndView returnModelAndView() {
 		log.info("실행");
-		ModelAndView mav = new ModelAndView();
-		mav.addObject("bno", 15);
-		mav.addObject("bkind", "notice");
-		mav.addObject("mid", "user1");
-		mav.addObject("memail", "user1@company.com");
-		mav.setViewName("ch02/returnModelAndView");
+		ModelAndView mav = new ModelAndView(); // 데이터와 view에 대한 정보를 가지고 있는 객체
+		mav.addObject("bno", 15); // jsp에서 사용할 데이터
+		mav.addObject("bkind", "notice"); // jsp에서 사용할 데이터
+		mav.addObject("mid", "user1"); // jsp에서 사용할 데이터
+		mav.addObject("memail", "user1@mycompany.com"); // jsp에서 사용할 데이터
+		mav.setViewName("ch02/returnModelAndView"); // 실행할 jsp 파일 찾을 때 사용
+		mav.addObject("chNum","ch02");
 		return mav;
 	}
-
+	
 	@GetMapping("/returnVoid")
 	public void returnVoid(HttpServletResponse response) throws IOException {
 		log.info("실행");
-		// { }: 객체 JSONObject jsonObject = new JSONObject();
-		// [ ]: 배열 JSONArray jsonArray = new JSONArray();
-
-		// {"result": "success", "mid": "user1" }
+		// { } : 객체 JSONObject jsonObject = new JSONObject();
+		// [ ] : 배열 JSONArray jsonArray = new JSONArray();
+		
+		// { "result" : "success", "mid" : "user1" }
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("result", "success");
 		jsonObject.put("mid", "user1");
 		String json = jsonObject.toString();
-
-		// 응답생성(contentType) + 본문(데이터)
+		
+		// 응답 생성 (헤더(contentType) + 본문(데이터))
 		response.setContentType("application/json; charset=UTF-8");
 		PrintWriter pw = response.getWriter();
 		pw.println(json);
 		pw.flush();
 		pw.close();
 	}
-
-	@GetMapping(value="/returnObject", produces="application/json; charser=UTF8")
-	@ResponseBody
-	public Object returnObject() {
+	
+	@GetMapping(value="/returnObject", produces="application/json; charset=UTF-8")
+	@ResponseBody // 리턴된 객체가 JSON으로 바뀌면서 응답 본문에 들어간다.
+	public Ch02LoginResult returnObject() {
 		log.info("실행");
 		
 		Ch02LoginResult obj = new Ch02LoginResult();
 		obj.setResult("success");
-		obj.setMid("user1");
+		obj.setMid("user1");		
+		
 		return obj;
 	}
 		
 	@LoginCheck
 	@GetMapping("/mypage")
-	public String mypage() {
+	public String mypage(Model model) {
 		log.info("실행");
+		model.addAttribute("chNum","ch02");
 		return "ch02/mypage";
 	}
 	
-	@GetMapping("loginForm")
-	public String loginFoam() {
+	@GetMapping("/loginForm")
+	public String loginForm(Model model) {
+		log.info("실행");
+		model.addAttribute("chNum","ch02");
 		return "ch02/loginForm";
 	}
 	
 	@PostMapping("/login")
 	public String login(String mid, String mpassword, HttpSession session) {
 		log.info("실행");
-		log.info("mid :" + mid);
-		log.info("mpassword :" + mpassword);
-		//세션에 로그인 정보 저장
+		log.info("mid: " + mid);
+		log.info("mpassword: " + mpassword);
+		// 세션에 로그인 정보 저장
 		session.setAttribute("login", mid);
+
 		return "redirect:/";
 	}
 	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		log.info("실행");
-		//세션에서 로그인 정보 삭제
+		// 세션에서 로그인 정보 삭제
 		session.removeAttribute("login");
+
 		return "redirect:/ch02/loginForm";
 	}
 }

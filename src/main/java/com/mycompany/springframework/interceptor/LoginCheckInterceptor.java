@@ -12,33 +12,33 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class LoginCheckInterceptor implements HandlerInterceptor {
-
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		log.info("실행");
-
+		
 		try {
-			// LoginCHeck Annotation이 붙어있는지 검사
+			// @LoginCheck가 붙어 있는지 검사
 			HandlerMethod handlerMethod = (HandlerMethod) handler;
 			LoginCheck loginCheck = handlerMethod.getMethodAnnotation(LoginCheck.class);
 			if (loginCheck == null) {
-				// LoginCheck가 붙어있지 않을 경우
+				// @LoginCheck가 붙어있지 않을 경우
 				log.info("@LoginCheck가 붙어있지 않음");
 			} else {
-				// LoginCheck가 붙어있을 경우
-				log.info("@LoginCheck가 붙어있음");
+				// @LoginCheck가 붙어있을 경우
+				log.info("@LoginCheck가 붙어 있음");
 				
-				//로그인 여부를 확인
-				HttpSession Session = request.getSession();
-				String login = (String)Session.getAttribute("login");
-				if(login == null) {
-					//로그인을 하지 않았을 경우
-					String contextPath = request.getServletContext().getContextPath();
-					response.sendRedirect (contextPath+ "/ch02/loginForm");
+				// 로그인 여부 확인
+				HttpSession session = request.getSession();
+				String login = (String) session.getAttribute("login"); // Object => String 타입 변환
+				if (login == null) {
+					// 로그인을 하지 않았을 경우
+					log.info(request.getServletContext().toString());
+					String contextPath = request.getContextPath();
+					response.sendRedirect(contextPath + "/ch02/loginForm");
 					return false;
-				}else {
-					//로그인을 했을 경우
+				} else {
+					// 로그인을 했을 경우
 				}
 			}
 		} catch (Exception e) {

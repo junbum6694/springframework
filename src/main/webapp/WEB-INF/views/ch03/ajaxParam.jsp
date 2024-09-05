@@ -1,66 +1,53 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
-
-<%@ include file="/WEB-INF/views/common/top.jsp"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ include file="/WEB-INF/views/common/top.jsp" %>
 
 <div class="card">
-
 	<div class="card-header">
-	AJAX로 파라미털 보내기
+		AJAX로 파라미터 보내기
 	</div>
 	
 	<div class="card-body">
-		<form>
-			
-			<div class="input-group">
-				<span class="input-group-text">param1</span> <input type="text"
-					name="param1" id="param1" class="form-control" value="문자열">
-			</div>
-			
-			<div class="input-group">
-				<span class="input-group-text">param2</span> <input type="text"
-					name="param2" id="param2" class="form-control" value="5">
-			</div>
-			
-			<div class="input-group">
-				<span class="input-group-text">param3</span> <input type="text"
-					name="param3" id="param3" class="form-control" value="3.14">
-			</div>
-			
-			<div class="input-group">
-				<span class="input-group-text">param4</span>
-				<div class="form-control d-flex">
-					<div>
-						<input type="radio" name="param4" checked value="true"> <label>true</label>
-					</div>
-					<div class="ms-3">
-						<input type="radio" name="param4" value="false"> <label>false</label>
-					</div>
-				</div>
-			</div>
-			
-			<div class="input-group">
-				<div class="input-group-prepend">
-					<span class="input-group-text">param5</span>
-				</div>
-				<input type="date" id="param5" name="param5" class="form-control" value="2030-12-05">
-			</div>
-			
-			<button type="button" onclick="requestAjax()" class="btn btn-info btn-sm mt-2">요청</button>
-			
+		<form> 
+	        <div class="input-group">
+	           <span class="input-group-text">param1</span>
+	           <input type="text" id="param1" name="param1" class="form-control" value="문자열">
+	        </div>
+	        <div class="input-group">
+	           <span class="input-group-text">param2</span>
+	           <input type="text" id="param2" name="param2" class="form-control" value="5" >
+	        </div>
+	        <div class="input-group">
+	           <span class="input-group-text">param3</span>
+	           <input type="text" id="param3" name="param3" class="form-control" value="3.14">
+	        </div>
+	        <div class="input-group">
+	           <span class="input-group-text">param4</span>
+	           <div class="form-control d-flex">
+	              <div>
+	                <input type="radio" name="param4" checked value="true">
+	                <label>true</label>
+	              </div>
+	              <div class="ms-3">
+	                <input type="radio" name="param4" value="false">
+	                <label>false</label>
+	              </div>
+	           </div>
+	        </div>
+	        <div class="input-group">
+	           <div class="input-group-prepend"><span class="input-group-text">param5</span></div>
+	           <input type="date" id="param5" name="param5" class="form-control" value="2030-12-05">
+	        </div>
+	        <button type="button" onclick="requestAjax()" class="btn btn-info btn-sm mt-2">요청</button>
 		</form>
+		
 		<script>
 			function requestAjax() {
 				var param1 = $("#param1").val();
 				var param2 = $("#param2").val();
 				var param3 = $("#param3").val();
-				var param4 = $("input[name=param4]:checked").val();
+				var param4 = $("input[name=param4]:checked").val(); // input 태그 중 name이 param4이고 체크된 것
 				var param5 = $("#param5").val();
-				
-				const params={ param1, param2 ,param3 ,param4, param5 };
-				// const params={ param1 :param1, param2 :param2 ,param3 :param3 ,param4 :param4, param5 :param5 };
-				// 를 생략하여 표현한것
-				
+				const params = {param1, param2, param3, param4, param5}; // 속성명과 값이 같을 때는 하나만 작성 가능
 				console.log(params);
 				
 				$.ajax({
@@ -70,10 +57,10 @@
 					success: function(data) {
 						console.log(data);
 					}
-				});
+				})
 			}
 		</script>
 	</div>
 </div>
 
-<%@ include file="/WEB-INF/views/common/bottom.jsp"%>
+<%@ include file="/WEB-INF/views/common/bottom.jsp" %>
