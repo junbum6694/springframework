@@ -12,13 +12,16 @@
 		<property name="dataSource" ref="dataSource"/>
 		<property name="configLocation" value="classpath:mybatis/mapper-config.xml"/>
 		<property name="mapperLocations" value="classpath:mybatis/mapper/*.xml"/>
-		
-		
 	</bean>
 		
 	<!-- @Mapper를 사용하기 위한 설정 -->
 	<mybatis-spring:scan 
 		base-package="com.mycompany.springframework.dao.mybatis"
 		annotation="org.apache.ibatis.annotations.Mapper"/>
+		
+	<!-- 예전방식으로 DAO를 만들기 위한 설정 -->
+	<bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg ref="sqlSessionFactory"/>
+	</bean>
 		
 </beans>

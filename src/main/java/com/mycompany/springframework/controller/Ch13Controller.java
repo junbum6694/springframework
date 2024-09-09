@@ -3,6 +3,7 @@ package com.mycompany.springframework.controller;
 import java.io.OutputStream;
 import java.util.List;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
@@ -16,10 +17,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.mycompany.springframework.dto.Ch13Board;
+import com.mycompany.springframework.dto.Ch13Member;
 import com.mycompany.springframework.dto.Ch13Pager;
 import com.mycompany.springframework.dto.Ch13UpdateBoardForm;
 import com.mycompany.springframework.dto.Ch13WriteBoardForm;
+import com.mycompany.springframework.interceptor.LoginCheck;
 import com.mycompany.springframework.service.Ch13BoardService;
+import com.mycompany.springframework.service.Ch13MemberService;
+import com.mycompany.springframework.service.Ch13MemberService.JoinResult;
+import com.mycompany.springframework.service.Ch13MemberService.LoginResult;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -30,6 +36,10 @@ public class Ch13Controller {
 	@Autowired
 	private Ch13BoardService boardService;
 	
+	@Resource
+	private Ch13MemberService memberService;
+	
+	@LoginCheck
 	@GetMapping("/writeBoardForm")
 	public String writeBoardForm(Model model) {
 		
@@ -58,12 +68,14 @@ public class Ch13Controller {
 	}*/
 	
 	//데이터베이스에 저장
+
 	@PostMapping("/writeBoard")
-	public String writeBoard(Ch13WriteBoardForm form) throws Exception{
+	public String writeBoard(Ch13WriteBoardForm form, HttpSession session) throws Exception{
 		Ch13Board board = new Ch13Board();
 		board.setBtitle(form.getBtitle());
 		board.setBcontent(form.getBcontent());
-		board.setMid("user1");
+		Ch13Member member = (Ch13Member)session.getAttribute("login");
+		board.setMid(member.getMid());
 		MultipartFile battach = form.getBattach();
 		if(!battach.isEmpty()) {
 			board.setBattachoname(battach.getOriginalFilename());
@@ -71,9 +83,10 @@ public class Ch13Controller {
 			board.setBattachdata(battach.getBytes());
 		}
 		boardService.writeBoard(board);
-		return "redirect:/boardList";
+		return "redirect:/ch13/boardList";
 	}
 	
+	@LoginCheck
 	@GetMapping("/boardList")
 	public String boardList(Model model, @RequestParam(defaultValue="1") int pageNo,
 			HttpSession session) {
@@ -153,5 +166,59 @@ public class Ch13Controller {
 		Ch13Pager pager = (Ch13Pager)session.getAttribute("pager");
 		int pageNo = pager.getPageNo();
 		return "redirect:/ch13/boardList?pageNo="+ pageNo;
+	}
+	
+//-----------------------------Member------------------------------------
+	
+	@GetMapping("/joinForm")
+	public String joinForm(Model model, Ch13Member member) {
+		model.addAttribute("chNum", "ch13");
+		return "ch13/joinForm";
+	}
+	
+	@PostMapping("/join")
+	public String join(Ch13Member member, Model model) {
+		member.setMenabled(true);
+		log.info(member.toString());
+		JoinResult joinResult = memberService.join(member);
+		if(joinResult == JoinResult.FAIL_DUPLICATED_MID) {
+			String errorMessage = "이미 존재하는 아이디 입니다.";
+			model.addAttribute("errorMessage", errorMessage);
+			return "ch13/joinForm";
+		}else { // JoinResult 가 SUCCESS일 경우
+			return "redirect:/ch13/loginForm";
+		}
+	}
+	
+	@GetMapping("/loginForm")
+	public String loginForm(Model model) {
+		
+		model.addAttribute("chNum", "ch13");
+		return "ch13/loginForm";
+	}
+	
+	@PostMapping("/login")
+	public String login(Ch13Member member, Model model, HttpSession session) {
+		LoginResult loginResult = memberService.login(member);
+		if(loginResult == LoginResult.FAIL_MID) {
+			model.addAttribute("errorMid", "아이디가 존재하지 않습니다.");
+			model.addAttribute("chNum", "ch13");
+			return "ch13/loginForm";
+		}else if(loginResult == LoginResult.FAIL_PASSWORD) {
+			model.addAttribute("errorMpassword", "비밀번호가 맞지 않습니다.");
+			model.addAttribute("chNum", "ch13");
+			return "ch13/loginForm";			
+		}else if(loginResult == LoginResult.FAIL_ENABLED) {
+			return "redirect:/";			
+		}else {// SUCCESS인 경우
+			session.setAttribute("login", member);
+			return "redirect:/";
+		}
+	}
+	
+	@GetMapping("/logout")
+	public String logout(HttpSession session) {
+		session.removeAttribute("login");
+		return "redirect:/ch13/loginForm";
 	}
 }
